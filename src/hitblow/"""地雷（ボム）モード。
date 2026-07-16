@@ -1,0 +1,55 @@
+"""地雷（ボム）モード。
+
+通常のHit & Blowに「地雷となる数字」を追加。
+プレイヤーがその数字を含めて予想してしまうと即座にゲームオーバーになります。
+1機能=1ファイルの方針に沿って独立させています。
+"""
+
+import random
+from .core import judge, make_secret
+
+def play_bomb_mode(digits=3):
+    """地雷モードのメインループ"""
+    print(f"💣 地雷モード（{digits} 桁・重複なし） 💣")
+    print("注意：0〜9の中に1つだけ「地雷」の数字が隠されています。")
+    print("その数字を含めて予想すると、即ゲームオーバーです！\n")
+
+    # 答えの数字を生成
+    secret = make_secret(digits)
+
+    # 地雷の数字を決定（必ず「答えに含まれていない数字」から1つ選ぶ）
+    available_bombs = [str(i) for i in range(10) if str(i) not in secret]
+    bomb_digit = random.choice(available_bombs)
+
+    tries = 0
+    while True:
+        guess = input("\n予想を入力 > ").strip()
+
+        # 入力チェック
+        if len(guess) != digits or not guess.isdigit():
+            print(f"{digits} 桁の数字で入力してください。")
+            continue
+
+        tries += 1
+
+        # 地雷チェック（予想の中に地雷の数字が含まれているか）
+        if bomb_digit in guess:
+            print("\n💥 ドカーン！！ 💥")
+            print(f"地雷の数字「{bomb_digit}」を踏んでしまいました！即ゲームオーバーです。")
+            print(f"ちなみに正解は {secret} でした。（{tries} 回目で爆死）")
+            break
+
+        # 通常のHit & Blow判定
+        hit, blow = judge(secret, guess)
+        print(f"  Hit={hit}  Blow={blow}")
+
+        # クリア判定
+        if hit == digits:
+            print(f"\n🎉 クリア！ {tries} 回で当てました！（答え {secret}）")
+            print("見事に地雷を回避しましたね！素晴らしいです。")
+            break
+
+# ファイルが直接実行された場合に起動する処理（前回のエラー対策）
+if __name__ == "__main__":
+    play_bomb_mode()
+    
