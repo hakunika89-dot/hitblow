@@ -17,12 +17,17 @@ def play(digits=3):
 
     tries = 0
     while True:
-        guess = input("予想 > ").strip()
+        guess = input("予想 (対戦時はvsと入力)> ").strip()
 
         # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
         # 例:  from .hint import hint
         #      if guess == "h":
         #          print(hint(secret)); continue
+        # ===== ② 入力コマンドに足す =====
+        from .local import play_versus
+        if guess == "vs":
+            play_versus(digits)
+            continue
 
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
