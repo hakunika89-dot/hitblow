@@ -25,11 +25,14 @@ def play(digits=3):
         #          print(hint(secret)); continue
         # ===== ② 入力コマンドに足す =====
         from .local import play_versus
+        from .bomb import play_bomb_mode
         if guess == "vs":
             play_versus(digits)
             continue
-
-        if len(guess) != digits or not guess.isdigit():
+        elif guess == "bm":
+            play_bomb_mode(digits)
+            continue
+        elif len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
             continue
         tries += 1
