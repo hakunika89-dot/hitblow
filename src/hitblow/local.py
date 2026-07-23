@@ -18,13 +18,28 @@ def play_versus(digits=3):
     name2 = input("プレイヤー2の名前 > ").strip() or "プレイヤー2"
 
     players = [
-        {"name": name1, "tries": 0},
-        {"name": name2, "tries": 0},
+        {"name": name1, "tries": 0, "hint_offered": False},
+        {"name": name2, "tries": 0, "hint_offered": False},
     ]
 
     turn = 0
     while True:
         current = players[turn % 2]
+        opponent = players[(turn + 1) % 2]
+
+        # ===== ヒント機能（相手に見えないよう画面を隠す） =====
+        from .hint import offer_hint
+        if current["tries"] == 4 and not current["hint_offered"]:
+            current["hint_offered"] = True
+
+            print(f"\n{opponent['name']} さんは画面を見ないでください。")
+            input(f"{current['name']} さんの番です。準備ができたらEnterを押してください > ")
+            print("\n" * 30)  # 前の画面(相手の予想など)を隠す
+
+            offer_hint(secret)
+
+            input("\n確認したらEnterを押してください（見終わったら画面を隠します）> ")
+            print("\n" * 30)  # ヒントの内容を隠す
 
         guess = input(f"\n{current['name']} さんの予想 > ").strip()
         if len(guess) != digits or not guess.isdigit():

@@ -16,13 +16,15 @@ def play(digits=3):
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
 
     tries = 0
+    hint_offered = False  # ヒントを既に尋ねたかどうか
     while True:
-        guess = input("予想").strip()
-
         # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
-        # 例:  from .hint import hint
-        #      if guess == "h":
-        #          print(hint(secret)); continue
+        from .hint import offer_hint
+        if tries == 4 and not hint_offered:
+            hint_offered = True
+            offer_hint(secret)
+
+        guess = input("予想 > ").strip()
 
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")

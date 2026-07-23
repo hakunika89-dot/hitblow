@@ -17,27 +17,35 @@ def play_bomb_mode(digits=3):
     # 答えの数字を生成
     secret = make_secret(digits)
 
-    # 地雷ナンバーを生成（必ず答えとは違う数字の組み合わせにする）
-    while True:
-        bomb_number = make_secret(digits)
-        if bomb_number != secret:
-            break
+    # 10個の地雷ナンバーを生成（答えと被らず，地雷同士も被らないようにする）
+    bomb_numbers = []
+    while len(bomb_numbers) < 72:
+        bomb = make_secret(digits)
+        if bomb != secret and bomb not in bomb_numbers:
+            bomb_numbers.append(bomb)
 
     tries = 0
+    hint_offered = False
     while True:
+        # ===== ヒント機能 =====
+        from .hint import offer_hint
+        if tries == 4 and not hint_offered:
+            hint_offered = True
+            offer_hint(secret)
         guess = input("\n予想を入力 > ").strip()
 
         # 入力チェック
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してください。")
+            print(f"{bomb_numbers}")
             continue
 
         tries += 1
 
         # 【追加】地雷との完全一致判定
-        if guess == bomb_number:
+        if guess in bomb_numbers:
             print("\n💥 ドカーン！！ 💥")
-            print(f"地雷ナンバー「{bomb_number}」を完全に入力してしまいました！")
+            print(f"地雷ナンバー「{bomb_numbers}」を完全に入力してしまいました！")
             print(f"即ゲームオーバーです。正解は {secret} でした。（{tries} 回目で爆死）")
             break
         
