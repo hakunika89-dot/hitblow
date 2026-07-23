@@ -21,7 +21,7 @@ def play_bomb_mode(digits=3):
     bomb_numbers = []
     while len(bomb_numbers) < 10:
         bomb = make_secret(digits)
-        if bomb != secret and bomb not in bomb_nimbers:
+        if bomb != secret and bomb not in bomb_numbers:
             bomb_numbers.append(bomb)
 
     tries = 0
