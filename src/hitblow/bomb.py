@@ -24,7 +24,14 @@ def play_bomb_mode(digits=3):
             break
 
     tries = 0
+    hint_offered = False
     while True:
+        # ===== ヒント機能 =====
+        from .hint import offer_hint
+        if tries == 4 and not hint_offered:
+            hint_offered = True
+            offer_hint(secret)
+
         guess = input("\n予想を入力 > ").strip()
 
         # 入力チェック
