@@ -17,11 +17,12 @@ def play_bomb_mode(digits=3):
     # 答えの数字を生成
     secret = make_secret(digits)
 
-    # 地雷ナンバーを生成（必ず答えとは違う数字の組み合わせにする）
-    while True:
-        bomb_number = make_secret(digits)
-        if bomb_number != secret:
-            break
+    # 10個の地雷ナンバーを生成（答えと被らず，地雷同士も被らないようにする）
+    bomb_numbers = []
+    while len(bomb_numbers) < 10:
+        bomb = make_secret(digits)
+        if bomb != secret and bomb not in bomb_nimbers:
+            bomb_numbers.append(bomb)
 
     tries = 0
     while True:
@@ -35,9 +36,9 @@ def play_bomb_mode(digits=3):
         tries += 1
 
         # 【追加】地雷との完全一致判定
-        if guess == bomb_number:
+        if guess in bomb_numbers:
             print("\n💥 ドカーン！！ 💥")
-            print(f"地雷ナンバー「{bomb_number}」を完全に入力してしまいました！")
+            print(f"地雷ナンバー「{guess}」を完全に入力してしまいました！")
             print(f"即ゲームオーバーです。正解は {secret} でした。（{tries} 回目で爆死）")
             break
         
