@@ -2,7 +2,7 @@
 
 from .game import play
 from .local import play_versus
-
+from .bomb import play_bomb_mode
 
 def main():
     modes = {
@@ -13,6 +13,10 @@ def main():
         "2": {
             "name": "2人対戦",
             "function": play_versus
+        },
+        "3":{
+            "name":"地雷モード",
+            "function":play_bomb_mode
         }
     }
 
