@@ -37,7 +37,6 @@ def play_bomb_mode(digits=3):
         # 入力チェック
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してください。")
-            print(f"{bomb_numbers}")
             continue
 
         tries += 1
